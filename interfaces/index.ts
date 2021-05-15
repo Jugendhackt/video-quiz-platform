@@ -9,3 +9,10 @@ export interface User {
   userName: string;
   connectionTime: string;
 }
+
+export interface Room {
+  subject: string;
+  topic: string;
+  image: string;
+  questionCount: number;
+}

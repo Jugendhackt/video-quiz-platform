@@ -22,7 +22,10 @@ nextApp.prepare().then(async() => {
 
     let users : User[] = [];
 
+
+
     io.on("connection", (socket) => {
+        const getUser = () => users.find(e => e.id == socket.id);
     
         socket.on("login", (userName) => {
             const minutes = new Date().getMinutes();
@@ -44,13 +47,21 @@ nextApp.prepare().then(async() => {
             io.emit("getMsg",
                 JSON.stringify({
                     id: socket.id,
-                    userName: users.find(e => e.id == msgTo.id)?.userName,
+                    userName: socket.id,
                     msg: msgTo.msg,
                     time: new Date().getHours() + ":" + (minutes < 10 ? "0" + minutes : minutes)
                 }));
         });
     
         socket.once("disconnect", () => {
+            const minutes = new Date().getMinutes();
+            io.emit("getMsg",
+                JSON.stringify({
+                    id: null,
+                    userName: null,
+                    msg: getUser()?.userName + " left!",
+                    time: new Date().getHours() + ":" + (minutes < 10 ? "0" + minutes : minutes)
+                }));
             let index = -1;
             if (users.length >= 0) {
                 index = users.findIndex(e => e.id == socket.id);
@@ -60,7 +71,7 @@ nextApp.prepare().then(async() => {
             io.emit("users", JSON.stringify(users));
         });
 
-        adminSocket(io, socket);
+        adminSocket(socket);
     });
     
     app.all('*', (req: any, res: any) => nextHandler(req, res));
