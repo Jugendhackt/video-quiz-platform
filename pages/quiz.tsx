@@ -1,9 +1,8 @@
-import Chat from 'components/Chat'
 import ChooseRoom from 'components/ChooseRoom'
 import React from 'react'
 import { Button, ButtonToolbar, Col, Container, Row } from 'react-bootstrap'
 
-export default function ChatPage() {
+export default function QuizPage() {
     return (
         <Container fluid={true}>
             <Row>
@@ -34,9 +33,7 @@ export default function ChatPage() {
                         <Button variant="primary" onClick={() => console.log("test")}>Quiz</Button>
                     </ButtonToolbar>
                 </Col>
-                <Col xs="12" md="6">
-                    <Chat /> 
-                </Col>
+
             </Row>
         </Container>
 
