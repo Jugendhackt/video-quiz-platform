@@ -107,6 +107,31 @@ function App() {
           })}
         </tbody>
       </table>
+      {video && video["videoType"] == "youtube" &&
+        <div style={{
+          maxWidth: "100%",
+          width: "600px",
+          left: 0,
+          right: 0,
+          margin: "auto"
+        }}><div
+        style={{
+          position: "relative",
+          paddingBottom: "56.25%" /* 16:9 */,
+          paddingTop: 25,
+          height: 0
+        }}
+      ><iframe 
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        border: 0
+      }} src={"https://www.youtube-nocookie.com/embed/" + video!["videoLink"]} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true}></iframe>
+      </div></div>
+      }
       <h3 className="d-flex justify-content-center">
         {" "}
         User : {loggedUser?.userName}{" "}
@@ -128,9 +153,6 @@ function App() {
           );
         })}
       </div>
-      {video && video["videoType"] == "youtube" &&
-        <iframe width="560" height="315" src={"https://www.youtube.com/embed/" + video!["videoLink"]} title="YouTube video player" style={{"border": 0}} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true}></iframe>
-      }
       <div className="d-flex justify-content-center">
         <input
           style={{ width: "300px", display: "inline" }}
