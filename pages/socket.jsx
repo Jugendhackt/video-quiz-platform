@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { Button } from 'react-bootstrap';
 
 
 const socket = socketIOClient();
@@ -69,8 +68,8 @@ function App() {
         {recMsg.listMsg?.map((msgInfo, index) => { return (<div className="d-flex justify-content-center" key={index}> <b>{msgInfo.userName} </b> :  {msgInfo.msg} <small style={{ marginLeft: "18px", color: "blue", marginTop: "5px" }}> {msgInfo.time} </small> </div>) })}
       </div>
       <div className="d-flex justify-content-center">
-        <TextField style={{ width: "300px", display: "inline" }} id="inputmsg" onChange={(event) => setMsg(event.target.value)} />
-        <Button className="btn btn-info" id="btnmsg" onClick={() => { sendMessage() }}> Send </Button>
+        <input style={{ width: "300px", display: "inline" }} id="inputmsg" onChange={(event) => setMsg(event.target.value)} />
+        <Button variant="outline-primary">Primary</Button>
       </div>
     </div >
   );

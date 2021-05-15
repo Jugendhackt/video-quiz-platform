@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import * as http from 'http';
 import next, { NextApiHandler } from 'next';
 import * as socketio from 'socket.io';
+import adminSocket from './admin';
 
 const port: number = parseInt(process.env.PORT || '3000', 10);
 const dev: boolean = process.env.NODE_ENV !== 'production';
@@ -24,15 +25,24 @@ nextApp.prepare().then(async() => {
     });
 
     let users : User[] = [];
+
     io.on("connection", (socket) => {
     
         socket.on("login", (userName) => {
-            users.push({ id: socket.id, userName: userName, connectionTime: new Date().toDateString() });
+            const minutes = new Date().getMinutes();
+            users.push({ id: socket.id, userName: userName, connectionTime: new Date().getHours() + ":" + (minutes < 10 ? "0" + minutes : minutes) });
             socket.emit("connecteduser", JSON.stringify(users[users.length - 1]));
             io.emit("users", JSON.stringify(users));
+            io.emit("getMsg",
+                JSON.stringify({
+                    id: socket.id,
+                    userName: "SYSTEM",
+                    msg: userName + " was joined!",
+                    time: new Date().getHours() + ":" + (minutes < 10 ? "0" + minutes : minutes)
+                }));
         });
     
-        socket.on("sendMsg", msgTo => {
+        socket.on("sendMsg", (msgTo) => {
             msgTo = JSON.parse(msgTo);
             const minutes = new Date().getMinutes();
             io.emit("getMsg",
@@ -53,6 +63,8 @@ nextApp.prepare().then(async() => {
                 users.splice(index, 1);
             io.emit("users", JSON.stringify(users));
         });
+
+        adminSocket(io, socket);
     });
     
     app.all('*', (req: any, res: any) => nextHandler(req, res));
