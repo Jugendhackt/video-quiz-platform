@@ -1,9 +1,10 @@
 import Chat from 'components/Chat'
 import ChooseRoom from 'components/ChooseRoom'
+import { SocketProps } from 'interfaces/props'
 import React from 'react'
 import { Button, ButtonToolbar, Col, Container, Row } from 'react-bootstrap'
 
-export default function ChatPage() {
+export default function ChatPage(props : SocketProps) {
     return (
         <Container fluid={true}>
             <Row>
@@ -30,8 +31,8 @@ export default function ChatPage() {
                     <br />
                     <ChooseRoom />
                     <ButtonToolbar className="justify-content-between" aria-label="Toolbar with Button groups">
-                        <Button variant="primary" onClick={() => console.log("hallo welt")}>Back</Button>
-                        <Button variant="primary" onClick={() => "openQuiz"}>Quiz</Button>
+                        <Button variant="primary" onClick={() => window.location.href = "/"}>Back</Button>
+                        <Button variant="primary" onClick={() => props.socket.emit("openQuiz")}>Quiz</Button>
                     </ButtonToolbar>
                 </Col>
                 <Col xs="12" md="4">

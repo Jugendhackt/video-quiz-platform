@@ -17,10 +17,11 @@ function App() {
   const [loggedUser, setLoggedUser] = useState<User>();
 
   const [name, setName] = React.useState<string>('');
+  const [connected, setConnected] = useState<boolean>(false);
 
-  const onNameChanged = event => {
-    localStorage.setItem('name', event.target.value);
-    setName(event.target.value);
+  const onNameChanged = (name : string) => {
+    localStorage.setItem('name', name);
+    setName(name);
   };
 
   useEffect(() => {
@@ -55,6 +56,7 @@ function App() {
     setLoggedUser(JSON.parse(data));
     socket.emit("getRooms");
     socket.emit("getRoom");
+    setConnected(true);
   });
 
   socket.on("getRooms", (data) => setRooms(data));
@@ -81,7 +83,7 @@ function App() {
       <input
         style={{ width: "300px", display: "inline" }}
         value={name}
-        onChange={onNameChanged}
+        onChange={() => onNameChanged(name)}
       />
       <Button
         variant="outline-primary"
@@ -95,6 +97,22 @@ function App() {
         }}>
         Set name
       </Button>
+      
+      <Button
+        variant="outline-primary"
+        onClick={() => {
+          if(connected)
+            socket.disconnect();
+          else
+            socket.connect();
+          setConnected(!connected);
+        }}>
+        {connected ? "Disconnect" : "Connect"}
+      </Button>
+      
+      
+      
+
       {rooms && (
         <ul>
           {rooms.map((room, index) => (

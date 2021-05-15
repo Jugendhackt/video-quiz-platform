@@ -4,6 +4,7 @@
 //
 // import { User } from 'path/to/interfaces';
 
+
 export interface User {
   id: string;
   userName: string;
@@ -16,3 +17,4 @@ export interface Room {
   image: string;
   questionCount: number;
 }
+
