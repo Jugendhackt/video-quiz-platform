@@ -29,6 +29,8 @@ nextApp.prepare().then(async() => {
     
         socket.on("login", (userName) => {
             const minutes = new Date().getMinutes();
+            
+            if(!users.some(user => user.id == socket.id))
             users.push({ id: socket.id, userName: userName, connectionTime: new Date().getHours() + ":" + (minutes < 10 ? "0" + minutes : minutes) });
             socket.emit("connecteduser", JSON.stringify(users[users.length - 1]));
             io.emit("users", JSON.stringify(users));
@@ -47,7 +49,7 @@ nextApp.prepare().then(async() => {
             io.emit("getMsg",
                 JSON.stringify({
                     id: socket.id,
-                    userName: socket.id,
+                    userName: getUser()?.userName,
                     msg: msgTo.msg,
                     time: new Date().getHours() + ":" + (minutes < 10 ? "0" + minutes : minutes)
                 }));

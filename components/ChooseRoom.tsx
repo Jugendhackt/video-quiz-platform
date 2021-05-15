@@ -1,9 +1,11 @@
 import React from 'react'
 
 export default function ChooseRoom() {
-    return (
-        <div>
-            
-        </div>
-    )
+  return (
+    <div>
+      Set Room?
+      
+      Choose Room
+    </div>
+  )
 }
