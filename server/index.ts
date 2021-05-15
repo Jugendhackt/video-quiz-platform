@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import * as http from 'http';
+import { User } from 'interfaces';
 import next, { NextApiHandler } from 'next';
 import * as socketio from 'socket.io';
 import adminSocket from './admin';
@@ -9,11 +10,6 @@ const dev: boolean = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler: NextApiHandler = nextApp.getRequestHandler();
 
-interface User {
-    id: string;
-    userName: string;
-    connectionTime: string;
-}
 nextApp.prepare().then(async() => {
     const app: Express = express();
     const server: http.Server = http.createServer(app);
@@ -36,7 +32,7 @@ nextApp.prepare().then(async() => {
             io.emit("getMsg",
                 JSON.stringify({
                     id: socket.id,
-                    userName: "SYSTEM",
+                    userName: null,
                     msg: userName + " was joined!",
                     time: new Date().getHours() + ":" + (minutes < 10 ? "0" + minutes : minutes)
                 }));
