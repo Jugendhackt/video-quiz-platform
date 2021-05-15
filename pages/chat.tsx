@@ -5,7 +5,7 @@ export default function ChatPage() {
     return (
         <Container fluid={true}>
             <Row>
-                <Col md="6">
+                <Col xs="12" md="6">
                     <div
                         style={{
                             position: "relative",
@@ -31,7 +31,7 @@ export default function ChatPage() {
                         <Button variant="primary" onClick={() => console.log("test")}>Quiz</Button>
                     </ButtonToolbar>
                 </Col>
-                <Col md="6">
+                <Col xs="12" md="6">
                     CHAT
                 </Col>
             </Row>
