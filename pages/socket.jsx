@@ -23,7 +23,7 @@ function App() {
     socket.emit("login", r);
     // list of connected users
     socket.on("users", data => {
-      setUser({ usersList: JSON.parse(data) })
+      setUser({ usersList: JSON.parse(data) });
     });
     // we get the messages
     socket.on("getMsg", data => {
@@ -36,7 +36,7 @@ function App() {
   // to send a message
   const sendMessage = () => {
     socket.emit("sendMsg", JSON.stringify({ id: loggedUser.id, msg: msg }));
-  }
+  };
   // get the logged user
   socket.on("connecteduser", data => {
     setLoggedUser(JSON.parse(data));
@@ -44,7 +44,9 @@ function App() {
 
   return (
     <div>
-      <h3 className="d-flex justify-content-center"> Connected users : {user.usersList?.length}</h3>
+      <h3 className="d-flex justify-content-center">
+        Connected users : {user.usersList?.length} 
+      </h3>
       <table className="table">
         <thead>
           <tr>
