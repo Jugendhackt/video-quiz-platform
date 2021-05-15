@@ -13,6 +13,7 @@ function App() {
   const [recMsg, setRecMsg] = useState({
     listMsg: [] as any[],
   });
+  const [video, setVideo] = useState<Record<string, any> | null>(null);
   const [loggedUser, setLoggedUser] = useState<User>();
 
   useEffect(() => {
@@ -51,6 +52,7 @@ function App() {
     console.log(data);
     return setRoom(data);
   });
+  socket.on("play", (data) => setVideo(data));
 
   return (
     <div>
@@ -76,6 +78,12 @@ function App() {
           <p>Subject: {room.subject}</p>
           <img src={room.image} height={50} />
           <p>Question count: {room.questionCount?.toString()}</p>
+          <Button
+            variant="outline-primary"
+            onClick={() => socket.emit("loadRoom")}
+          >
+            Load
+          </Button>
         </div>
       )}
       <h3 className="d-flex justify-content-center">
@@ -99,6 +107,31 @@ function App() {
           })}
         </tbody>
       </table>
+      {video && video["videoType"] == "youtube" &&
+        <div style={{
+          maxWidth: "100%",
+          width: "600px",
+          left: 0,
+          right: 0,
+          margin: "auto"
+        }}><div
+        style={{
+          position: "relative",
+          paddingBottom: "56.25%" /* 16:9 */,
+          paddingTop: 25,
+          height: 0
+        }}
+      ><iframe 
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        border: 0
+      }} src={"https://www.youtube-nocookie.com/embed/" + video!["videoLink"]} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true}></iframe>
+      </div></div>
+      }
       <h3 className="d-flex justify-content-center">
         {" "}
         User : {loggedUser?.userName}{" "}
