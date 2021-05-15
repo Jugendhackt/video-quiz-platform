@@ -45,4 +45,16 @@ export default (socket: Socket) => {
     }
     socket.emit("getRooms", rooms);
   });
+
+  socket.on("openQuiz", () => {
+    if(detailedRoom == null)
+      return;
+    var questions = detailedRoom!["questions"];
+    questions.map((question: Record<string, any>) => {
+      question["answers"] = question["answers"].map((answer: Record<string, any>) => {
+        return answer["content"];
+      });
+    });
+    socket.emit("openQuiz", questions);
+  });
 };

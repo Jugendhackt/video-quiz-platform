@@ -64,8 +64,10 @@ function App() {
   });
   socket.on("play", (data) => setVideo(data));
 
-  const openQuiz = () => {
+  socket.on("openQuiz", (quiz) => console.log(quiz));
 
+  const openQuiz = () => {
+    socket.emit("openQuiz");
   };
 
   const connect = (name: string) => {

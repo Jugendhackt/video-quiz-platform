@@ -7,7 +7,7 @@ export default function ChatPage() {
     return (
         <Container fluid={true}>
             <Row>
-                <Col xs="12" sm="10" md="6">
+                <Col xs="12" md="8">
                     <div
                         style={{
                             position: "relative",
@@ -31,10 +31,10 @@ export default function ChatPage() {
                     <ChooseRoom />
                     <ButtonToolbar className="justify-content-between" aria-label="Toolbar with Button groups">
                         <Button variant="primary" onClick={() => console.log("hallo welt")}>Back</Button>
-                        <Button variant="primary" onClick={() => console.log("test")}>Quiz</Button>
+                        <Button variant="primary" onClick={() => "openQuiz"}>Quiz</Button>
                     </ButtonToolbar>
                 </Col>
-                <Col xs="12" md="6">
+                <Col xs="12" md="4">
                     <Chat /> 
                 </Col>
             </Row>
