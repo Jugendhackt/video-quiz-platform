@@ -9,14 +9,7 @@ var detailedRoom : Record<string, any> | null = null;
 var rooms: Room[] = [];
 var roomUrls: string[] = [];
 export default (socket: Socket) => {
-  socket.on("setRoom", async (id) => {
-    room = rooms[id];
-    roomUrl = roomUrls[id];
-    detailedRoom = null;
-    socket.emit("getRoom", room);
-  });
-  socket.on("getRoom", () => socket.emit("getRoom", room));
-  socket.on("loadRoom", async () => {
+  const play = async () => {
     if(detailedRoom == null){
       var response = await fetch(roomUrl!);
       var data = await response.json();
@@ -26,7 +19,16 @@ export default (socket: Socket) => {
       videoType: detailedRoom!["videoType"],
       videoLink: detailedRoom!["videoLink"]
     });
+  };
+  socket.on("setRoom", async (id) => {
+    room = rooms[id];
+    roomUrl = roomUrls[id];
+    detailedRoom = null;
+    socket.emit("getRoom", room);
+    play();
   });
+  socket.on("getRoom", () => socket.emit("getRoom", room));
+  socket.on("loadRoom", play);
   socket.on("getRooms", async () => {
     if (rooms.length == 0) {
       var response = await fetch(ENDPOINT + "/index.json");
