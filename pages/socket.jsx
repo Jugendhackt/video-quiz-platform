@@ -69,7 +69,7 @@ function App() {
       </div>
       <div className="d-flex justify-content-center">
         <input style={{ width: "300px", display: "inline" }} id="inputmsg" onChange={(event) => setMsg(event.target.value)} />
-        <Button variant="outline-primary">Primary</Button>
+        <Button variant="outline-primary" onClick={sendMessage}>Primary</Button>
       </div>
     </div >
   );
