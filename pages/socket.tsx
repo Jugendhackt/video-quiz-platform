@@ -13,6 +13,7 @@ function App() {
   const [recMsg, setRecMsg] = useState({
     listMsg: [] as any[],
   });
+  const [video, setVideo] = useState<Record<string, any> | null>(null);
   const [loggedUser, setLoggedUser] = useState<User>();
 
   useEffect(() => {
@@ -51,6 +52,7 @@ function App() {
     console.log(data);
     return setRoom(data);
   });
+  socket.on("play", (data) => setVideo(data));
 
   return (
     <div>
@@ -76,6 +78,12 @@ function App() {
           <p>Subject: {room.subject}</p>
           <img src={room.image} height={50} />
           <p>Question count: {room.questionCount?.toString()}</p>
+          <Button
+            variant="outline-primary"
+            onClick={() => socket.emit("loadRoom")}
+          >
+            Load
+          </Button>
         </div>
       )}
       <h3 className="d-flex justify-content-center">
@@ -120,6 +128,9 @@ function App() {
           );
         })}
       </div>
+      {video && video["videoType"] == "youtube" &&
+        <iframe width="560" height="315" src={"https://www.youtube.com/embed/" + video!["videoLink"]} title="YouTube video player" style={{"border": 0}} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true}></iframe>
+      }
       <div className="d-flex justify-content-center">
         <input
           style={{ width: "300px", display: "inline" }}
