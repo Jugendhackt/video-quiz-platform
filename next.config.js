@@ -1,5 +1,6 @@
-module.exports = {
-  future: {
-    webpack5: true,
-  },
+
+import { join } from 'path';
+
+export const sassOptions = {
+  includePaths: [join(__dirname, 'styles')],
 };
