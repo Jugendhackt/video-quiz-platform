@@ -1,4 +1,13 @@
+$primary-color: #00FFFF;
+$secondary-color: red;
+
 .colored {
-    background-color: green;
-    color: red;
+    background-color: $primary-color;
+    color: $secondary-color;
+}
+
+
+.ueberschrift {
+    background-color: aqua; 
+
 }
