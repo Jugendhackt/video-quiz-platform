@@ -3,9 +3,9 @@ import socketIOClient from "socket.io-client";
 import { Button } from "react-bootstrap";
 import { Room, User } from "interfaces";
 
-const socket = socketIOClient();
 
-function App() {
+const socket = socketIOClient();
+function SocketPage() {
   const [userList, setUserList] = useState<User[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [room, setRoom] = useState<Room>();
@@ -25,7 +25,6 @@ function App() {
   };
 
   useEffect(() => {
-
     var temporaryName = localStorage.getItem('name') ?? Math.random().toString(36).substring(7);
 
     setName(temporaryName);
@@ -44,6 +43,7 @@ function App() {
       setRecMsg({ listMsg: listMessages });
     });
   }, []);
+
 
   // to send a message
   const sendMessage = () => {
@@ -83,7 +83,7 @@ function App() {
       <input
         style={{ width: "300px", display: "inline" }}
         value={name}
-        onChange={() => onNameChanged(name)}
+        onChange={(event) => onNameChanged(event.target.value)}
       />
       <Button
         variant="outline-primary"
@@ -108,6 +108,11 @@ function App() {
           setConnected(!connected);
         }}>
         {connected ? "Disconnect" : "Connect"}
+      </Button>
+
+      <Button variant="outline-primary"
+      href="/index">
+        <a>Mainpage</a>
       </Button>
       
       
@@ -227,4 +232,4 @@ function App() {
     </div>
   );
 }
-export default App;
+export default SocketPage;

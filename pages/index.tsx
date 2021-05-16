@@ -3,16 +3,10 @@ import Layout from '../components/Layout'
 
 
 const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1 className={"colored"}>Hello Next.js 👋</h1>
+  <Layout title="Video Quiz Platform">
+    <h1 className={"colored"}>Welcome to our Video-Quiz-Platform</h1>
     <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-      <br />
-      <Link href="/quiz">
-        <a>Quiz</a>
-      </Link>
+      #jugendhacktffm2021
     </p>
   </Layout>
 )

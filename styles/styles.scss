@@ -11,3 +11,7 @@ $secondary-color: red;
     background-color: aqua; 
 
 }
+
+html, body, #__next, #__next>div {
+    height: 100%
+  }

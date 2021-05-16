@@ -5,19 +5,19 @@ const ENDPOINT = "https://jhackt.hns.siasky.net";
 
 var room: Room | null = null;
 var roomUrl: string | null = null;
-var detailedRoom : Record<string, any> | null = null;
+var detailedRoom: Record<string, any> | null = null;
 var rooms: Room[] = [];
 var roomUrls: string[] = [];
-export default (io : Server, socket: Socket) => {
+export default (io: Server, socket: Socket) => {
   const play = async () => {
-    if(detailedRoom == null){
+    if (detailedRoom == null) {
       var response = await fetch(roomUrl!);
       var data = await response.json();
       detailedRoom = data;
     }
     io.emit("play", {
       videoType: detailedRoom!["videoType"],
-      videoLink: detailedRoom!["videoLink"]
+      videoLink: detailedRoom!["videoLink"],
     });
   };
   socket.on("setRoom", async (id) => {
@@ -41,32 +41,35 @@ export default (io : Server, socket: Socket) => {
       });
       roomUrls = data.map((current) => current["url"]);
       rooms = data as Room[];
-
     }
     socket.emit("getRooms", rooms);
   });
 
   socket.on("openQuiz", () => {
-    if(detailedRoom == null)
-      return;
+    if (detailedRoom == null) return;
     var questions = detailedRoom!["questions"];
-    questions.map((question: Record<string, any>) => {
-      question["answers"] = question["answers"].map((answer: Record<string, any>) => {
-        return answer["content"];
-      });
+    questions?.map((question: Record<string, any>) => {
+      question["answers"] = question["answers"]?.map(
+        (answer: Record<string, any>) => {
+          return answer["content"];
+        }
+      );
     });
-    socket.emit("openQuiz", questions);
+    io.emit("openQuiz", questions);
   });
 
-  socket.on("validateQuiz", (questionsAnswers : Array<Array<boolean>>) => {
-    if(detailedRoom == null)
-      return;
-    var validation : boolean[][] = [];
+  socket.on("validateQuiz", (questionsAnswers: Array<Array<boolean>>) => {
+    if (detailedRoom == null) return;
+    var validation: boolean[][] = [];
     questionsAnswers.forEach((questionAnswer, questionIndex) => {
       questionAnswer.forEach((answer, answerIndex) => {
-        validation[questionIndex][answerIndex] = answer == detailedRoom!["questions"][questionIndex]["answers"][answerIndex]["correct"];
+        validation[questionIndex][answerIndex] =
+          answer ==
+          detailedRoom!["questions"][questionIndex]["answers"][answerIndex][
+            "correct"
+          ];
       });
     });
-    
+    socket.emit("validateQuiz", validation);
   });
 };

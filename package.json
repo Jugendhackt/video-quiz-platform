@@ -1,5 +1,5 @@
 {
-  "name": "with-typescript",
+  "name": "video-quiz-platform",
   "versoin": "1.0.0",
   "scripts": {
     "dev": "nodemon",
