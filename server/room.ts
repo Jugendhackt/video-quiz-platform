@@ -1,5 +1,5 @@
 import { Room } from "interfaces";
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 
 const ENDPOINT = "https://jhackt.hns.siasky.net";
 
@@ -8,14 +8,14 @@ var roomUrl: string | null = null;
 var detailedRoom : Record<string, any> | null = null;
 var rooms: Room[] = [];
 var roomUrls: string[] = [];
-export default (socket: Socket) => {
+export default (io : Server, socket: Socket) => {
   const play = async () => {
     if(detailedRoom == null){
       var response = await fetch(roomUrl!);
       var data = await response.json();
       detailedRoom = data;
     }
-    socket.emit("play", {
+    io.emit("play", {
       videoType: detailedRoom!["videoType"],
       videoLink: detailedRoom!["videoLink"]
     });
@@ -24,7 +24,7 @@ export default (socket: Socket) => {
     room = rooms[id];
     roomUrl = roomUrls[id];
     detailedRoom = null;
-    socket.emit("getRoom", room);
+    io.emit("getRoom", room);
     play();
   });
   socket.on("getRoom", () => socket.emit("getRoom", room));
@@ -56,5 +56,17 @@ export default (socket: Socket) => {
       });
     });
     socket.emit("openQuiz", questions);
+  });
+
+  socket.on("validateQuiz", (questionsAnswers : Array<Array<boolean>>) => {
+    if(detailedRoom == null)
+      return;
+    var validation : boolean[][] = [];
+    questionsAnswers.forEach((questionAnswer, questionIndex) => {
+      questionAnswer.forEach((answer, answerIndex) => {
+        validation[questionIndex][answerIndex] = answer == detailedRoom!["questions"][questionIndex]["answers"][answerIndex]["correct"];
+      });
+    });
+    
   });
 };

@@ -3,7 +3,7 @@ import * as http from 'http';
 import { User } from 'interfaces';
 import next, { NextApiHandler } from 'next';
 import * as socketio from 'socket.io';
-import adminSocket from './admin';
+import roomSockets from './room';
 
 const port: number = parseInt(process.env.PORT || '3000', 10);
 const dev: boolean = process.env.NODE_ENV !== 'production';
@@ -73,7 +73,7 @@ nextApp.prepare().then(async() => {
             io.emit("users", JSON.stringify(users));
         });
 
-        adminSocket(socket);
+        roomSockets(io, socket);
     });
     
     app.all('*', (req: any, res: any) => nextHandler(req, res));
